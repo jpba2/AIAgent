@@ -34,11 +34,8 @@ def main():
         print(f"User prompt: {user_prompt}")    
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-        print("Response:")
-        print(response.text)
-    else:
-        print("Response:")
-        print(response.text)
+    print("Response:")
+    print(response.text)
 
 
 if __name__ == "__main__":
