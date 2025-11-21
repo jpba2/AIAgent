@@ -1,5 +1,4 @@
 import os
-import sys
 
 def get_files_info(working_directory, directory="."):
     test_path = os.path.join(working_directory, directory)
