@@ -34,5 +34,6 @@ schema_get_file_content = types.FunctionDeclaration(
                 description="The file_path for the file from which the contents are to be printed. If not provided, or doesn't lead to a file, it return an error.",
             ),
         },
+        required=["file_path"]
     ),
 )

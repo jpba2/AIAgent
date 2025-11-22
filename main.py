@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from call_function import available_functions
+from call_function import call_function
 
 
 def main():
@@ -47,15 +48,34 @@ def main():
         config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt)
         )
 
+    verbose = "--verbose" in user_prompt
+
     if "--verbose" in user_prompt:
         print(f"User prompt: {user_prompt}")    
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    print("Response:")
-    print(response.text)
+
+    if not response.function_calls:
+        print("Response:")
+        print(response.text)
+        return response.text
+    
+
+    function_responses = []
     for calls in response.function_calls:
-        print(f"Calling function: {calls.name}({calls.args})")
+        call_return = call_function(calls, verbose)
+        if (not call_return.parts or not call_return.parts[0].function_response):
+            raise Exception("empty function call result")
+        if verbose:
+            print(f"-> {call_return.parts[0].function_response.response}")
+        function_responses.append(call_return.parts[0])
+
+    if not function_responses:
+        raise Exception("no function responses generated, exiting")
+        
+        
 
 
 if __name__ == "__main__":
     main()
+
