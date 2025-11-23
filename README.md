@@ -1,0 +1,1 @@
+Simple AI agent, created as part of a Bootdev project, to try to better understand LLMs and how to use them.
